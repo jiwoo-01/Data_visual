@@ -1,0 +1,56 @@
+# 파일 경로 지정 
+file_path <- file_path <- "player.csv"
+
+# CSV 파일 불러오기
+player_data <- read.csv(file_path)
+
+# 데이터 확인 
+head(player_data)
+colnames(player_data)
+
+# install packages
+install.packages("ggplot2")
+install.packages("dplyr")
+install.packages("tidyr")
+install.packages("lubridate")
+install.packages("readr")
+
+# dplyr, ggplot2 패키지 불러오기
+library(dplyr)
+library(ggplot2)
+
+# 선수 데이터에서 goals_overall 컬럼을 기준으로 상위 5명 추출
+top_scores <- player_data %>%
+  filter(!is.na(goals_overall)) %>%
+  arrange(desc(goals_overall)) %>%
+  select(full_name, goals_overall) %>%
+  head(10)
+
+# 결과 확인하기
+top_scores
+
+
+# 상위 10명의 골 개수 시각화 (막대 그래프)
+ggplot(top_scores, aes(x = reorder(full_name, goals_overall), y = goals_overall)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  labs(title = "Top 10 Goal Scorers", x = "Player", y = "Goals") +
+  theme_minimal() +
+  coord_flip()   # 가로로 출력
+
+colnames(player_data)
+
+# 가장 많은 골을 넣은 선수를 찾고 그 선수의 어시스트 수를 확인
+top_10_assist <- player_data %>%
+  arrange(desc(goals_overall)) %>%
+  slice_head(n=10) %>%  # 상위 10명 선택
+  select(full_name, goals_overall, assists_overall)
+
+# 결과 출력
+top_10_assist
+
+# 상위 10명의asisst 수 시각화화 (막대 그래프)
+ggplot(top_10_assist, aes(x = reorder(full_name, assists_overall), y = assists_overall)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  labs(title = "Top 10 assist Scorers", x = "Player", y = "assist") +
+  theme_minimal() +
+  coord_flip() 
