@@ -1,5 +1,5 @@
 # 파일 경로 지정 
-file_path <- file_path <- "player.csv"
+file_path <- "player.csv"
 
 # CSV 파일 불러오기
 player_data <- read.csv(file_path)
